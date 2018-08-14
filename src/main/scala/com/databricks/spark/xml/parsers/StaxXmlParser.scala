@@ -101,7 +101,7 @@ private[xml] object StaxXmlParser {
 
     (parser.peek, dataType) match {
       case (_: StartElement, dt: DataType) => convertComplicatedType(dt)
-      case (_: EndElement, _: DataType) => null
+      case (_: EndElement, _: DataType) => ""
       case (c: Characters, dt: DataType) if c.isWhiteSpace =>
         // When `Characters` is found, we need to look further to decide
         // if this is really data or space between other elements.
