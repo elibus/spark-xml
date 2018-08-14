@@ -231,7 +231,7 @@ private[xml] object StaxXmlParser {
       if (options.treatEmptyValuesAsNulls) {
         null
       } else {
-        Row(null)
+        Row.fromSeq(Seq.fill(schema.fields.length)(null))
       }
     } else {
       Row.fromSeq(row)

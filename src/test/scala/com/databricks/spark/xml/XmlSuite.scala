@@ -667,13 +667,27 @@ class XmlSuite extends FunSuite with BeforeAndAfterAll {
     assert(results.size === numTopics)
   }
 
-  test("Missing nested struct represented as null instead of empty Row") {
-    val result = sqlContext
-      .xmlFile(nullNestedStructFile, rowTag = "item")
-      .select("b.es")
+  test("Missing nested struct represented as empty Row") {
+    val customSchema = new StructType()
+      .add("b",
+        new StructType()
+          .add("es", new StructType()
+            .add("e", StringType)
+            .add("f", StringType)
+          )
+        )
+
+    val result = new XmlReader()
+      .withSchema(customSchema)
+      .withRowTag("item")
+      .xmlFile(sqlContext, nullNestedStructFile)
+      .select("b")
       .collect()
 
-    assert(result(1) === Row(Row(null)))
+    assert(result(0) === Row(Row(null)))
+    assert(result(1) === Row(Row(Row(null,null))))
+    assert(result(2) === Row(Row(Row("E",null))))
+    assert(result(3) === Row(Row(Row("E","F"))))
   }
 
   test("Produces correct order of columns for nested rows when user specifies a schema") {
