@@ -691,7 +691,7 @@ class XmlSuite extends FunSuite with BeforeAndAfterAll {
     assert(result(0) === Row(Row(null)))
     assert(result(1) === Row(Row(Row(null,null))))
     assert(result(2) === Row(Row(Row("E",null))))
-    assert(result(3) === Row(Row(Row("E","F"))))
+    assert(result(3) === Row(Row(Row("E"," "))))
   }
 
   test("Produces correct order of columns for nested rows when user specifies a schema") {

@@ -32,7 +32,7 @@
 					The <es> node exists and can have two nested elements, E and F
 				-->
 				<e>E</e>
-				<f>F</f>
+				<f> </f>
 			</es>
 		</b>
 	</item>

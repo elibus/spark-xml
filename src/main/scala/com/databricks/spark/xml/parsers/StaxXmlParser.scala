@@ -228,11 +228,7 @@ private[xml] object StaxXmlParser {
     // Return null rather than empty row. For nested structs empty row causes
     // ArrayOutOfBounds exceptions when executing an action.
     if (valuesMap.isEmpty) {
-      if (options.treatEmptyValuesAsNulls) {
-        null
-      } else {
         Row.fromSeq(Seq.fill(schema.fields.length)(null))
-      }
     } else {
       Row.fromSeq(row)
     }
