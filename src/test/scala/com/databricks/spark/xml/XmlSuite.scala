@@ -668,17 +668,21 @@ class XmlSuite extends FunSuite with BeforeAndAfterAll {
   }
 
   test("Missing nested struct represented as empty Row") {
-    val customSchema = new StructType()
-      .add("b",
-        new StructType()
-          .add("es", new StructType()
-            .add("e", StringType)
-            .add("f", StringType)
-          )
-        )
+    val leavesSchema = StructType(
+      Seq(
+        StructField("e", StringType, nullable = true),
+        StructField("f", StringType, nullable = true)))
+
+    val nestedSchema = StructType(
+          Seq(
+            StructField("es", leavesSchema, nullable = true)))
+
+    val schema = StructType(
+      Seq(
+        StructField("b", nestedSchema, nullable = true)))
 
     val result = new XmlReader()
-      .withSchema(customSchema)
+      .withSchema(schema)
       .withRowTag("item")
       .xmlFile(sqlContext, nullNestedStructFile)
       .select("b")
